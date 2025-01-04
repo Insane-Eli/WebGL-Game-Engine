@@ -7,16 +7,17 @@ const eViewport = Object.freeze({
     eHeight: 3
 });
 
+
 class Camera {
     constructor(wcCenter, wcWidth, viewportArray) {
         // WC and viewport position and size
         this.mWCCenter = wcCenter;
         this.mWCWidth = wcWidth;
-        this.mViewport = viewportArray; // [x, y, width, height]
+        this.mViewport = viewportArray;  // [x, y, width, height]
         // Camera transform operator
         this.mCameraMatrix = mat4.create();
         // background color
-        this.mBGColor = [1, 1, 1, 1]; // RGB and Alpha
+        this.mBGColor = [0.8, 0.8, 0.8, 1]; // RGB and Alpha
     }
     getWCHeight() {
         // viewportH/viewportW
@@ -35,14 +36,14 @@ class Camera {
     getViewport() { return this.mViewport; }
     setBackgroundColor(newColor) { this.mBGColor = newColor; }
     getBackgroundColor() { return this.mBGColor; }
+
     // Initializes the camera to begin drawing
     setViewAndCameraMatrix() {
         let gl = glSys.get();
-        // Step A: Configure the viewport
         // Step A1: Set up the viewport: area on canvas to be drawn
-        gl.viewport(this.mViewport[0], // x of bottom-left of area to be drawn
-            this.mViewport[1], // y of bottom-left of area to be drawn
-            this.mViewport[2], // width of the area to be drawn
+        gl.viewport(this.mViewport[0],  // x of bottom-left of area to be drawn
+            this.mViewport[1],  // y of bottom-left of area to be drawn
+            this.mViewport[2],  // width of the area to be drawn
             this.mViewport[3]); // height of the area to be drawn
         // Step A2: set up the corresponding scissor area to limit the clear area
         gl.scissor(this.mViewport[0], // x of bottom-left of area to be drawn
@@ -57,6 +58,7 @@ class Camera {
         gl.enable(gl.SCISSOR_TEST);
         gl.clear(gl.COLOR_BUFFER_BIT);
         gl.disable(gl.SCISSOR_TEST);
+
         // Step B: Compute the Camera Matrix
         let center = this.getWCCenter();
         // Step B1: after translation, scale to -1 to 1: 2x2 square at origin
@@ -66,7 +68,9 @@ class Camera {
         // Step B2: first translate camera center to the origin
         mat4.translate(this.mCameraMatrix, this.mCameraMatrix,
             vec3.fromValues(-center[0], -center[1], 0));
+
     }
     getCameraMatrix() { return this.mCameraMatrix; }
 }
+
 export default Camera;
