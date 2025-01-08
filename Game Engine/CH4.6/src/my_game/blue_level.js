@@ -7,6 +7,9 @@ import MyGame from "./my_game.js";
 class BlueLevel extends engine.Scene {
   constructor() {
     super();
+    // audio clips: supports both mp3 and wav formats
+    this.mBackgroundAudio = "assets/sounds/bg_clip.mp3";
+    this.mCue = "/assets/sounds/blue_level_cue.wav";
     // scene file name
     this.mSceneFile = "assets/blue_level.xml";
     // all squares
@@ -21,6 +24,8 @@ class BlueLevel extends engine.Scene {
     this.mCamera = sceneParser.parseCamera();
     // Step B: Read all the squares
     sceneParser.parseSquares(this.mSqSet);
+    // now start the Background music ...
+    engine.audio.playBackground(this.mBackgroundAudio, 0.5);
   }
 
   draw() {
@@ -38,34 +43,42 @@ class BlueLevel extends engine.Scene {
     let deltaX = 0.05;
     /// Move right and swap over
     if (engine.input.isKeyPressed(engine.input.keys.Right)) {
-    xform.incXPosBy(deltaX);
-    if (xform.getXPos() > 30) { // right-bound of the window
-    xform.setPosition(12, 60);
-    }
+      engine.audio.playCue(this.mCue, 0.5);
+      xform.incXPosBy(deltaX);
+      if (xform.getXPos() > 30) {
+        // right-bound of the window
+        xform.setPosition(12, 60);
+      }
     }
     // test for white square movement
     if (engine.input.isKeyPressed(engine.input.keys.Left)) {
-    xform.incXPosBy(-deltaX);
-    if (xform.getXPos() < 11) { // this is the left-boundary
-    this.next(); // go back to my game
+      engine.audio.playCue(this.mCue, 1.0);
+      xform.incXPosBy(-deltaX);
+      if (xform.getXPos() < 11) {
+        // this is the left-boundary
+        this.next(); // go back to my game
+      }
     }
-    }
-    if (engine.input.isKeyPressed(engine.input.keys.Q))
-    this.stop(); // Quit the game
-    }
+    if (engine.input.isKeyPressed(engine.input.keys.Q)) this.stop(); // Quit the game
+  }
   load() {
     engine.xml.load(this.mSceneFile);
+    engine.audio.load(this.mBackgroundAudio);
+    engine.audio.load(this.mCue);
   }
   unload() {
+    // stop the background audio
+    engine.audio.stopBackground();
     // unload the scene file and loaded resources
     engine.xml.unload(this.mSceneFile);
+    engine.audio.unload(this.mBackgroundAudio);
+    engine.audio.unload(this.mCue);
   }
   next() {
     super.next();
     let nextLevel = new MyGame(); // load the next level
     nextLevel.start();
-    }
-
+  }
 }
 
 window.onload = function () {

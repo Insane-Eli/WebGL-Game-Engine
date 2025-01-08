@@ -11,6 +11,7 @@ import * as loop from "./core/loop.js";
 import Renderable from "./renderable.js";
 import Transform from "./transform.js";
 import Camera from "./camera.js";
+import * as audio from "./resources/audio.js";
 
 // general engine utilities
 function init(htmlCanvasID) {
@@ -18,6 +19,15 @@ function init(htmlCanvasID) {
   vertexBuffer.init();
   shaderResources.init();
   input.init();
+  audio.init();
+}
+function cleanUp() {
+  loop.cleanUp();
+  audio.cleanUp();
+  input.cleanUp();
+  shaderResources.cleanUp();
+  vertexBuffer.cleanUp();
+  glSys.cleanUp();
 }
 
 function clearCanvas(color) {
@@ -26,17 +36,11 @@ function clearCanvas(color) {
   gl.clear(gl.COLOR_BUFFER_BIT); // clear to the color set
 }
 
-function cleanUp() {
-  loop.cleanUp();
-  input.cleanUp();
-  shaderResources.cleanUp();
-  vertexBuffer.cleanUp();
-  glSys.cleanUp();
-}
 
 export default {
   // input support
   input,
+  audio,
   text,
   xml,
   // Util classes

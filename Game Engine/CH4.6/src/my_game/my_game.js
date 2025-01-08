@@ -8,6 +8,9 @@ import BlueLevel from "./blue_level.js";
 class MyGame extends engine.Scene {
   constructor() {
     super();
+    // audio clips: supports both mp3 and wav formats
+    this.mBackgroundAudio = "assets/sounds/bg_clip.mp3";
+    this.mCue = "assets/sounds/my_game_cue.wav";
     // The camera to view the scene
     this.mCamera = null;
     // the hero and the support objects
@@ -32,6 +35,8 @@ class MyGame extends engine.Scene {
     this.mHero.setColor([0, 0, 1, 1]);
     this.mHero.getXform().setPosition(20, 60);
     this.mHero.getXform().setSize(2, 3);
+    // now start the Background music ...
+    engine.audio.playBackground(this.mBackgroundAudio, 1.0);
   }
   draw() {
     // Step A: clear the canvas
@@ -50,6 +55,8 @@ class MyGame extends engine.Scene {
     let xform = this.mHero.getXform();
     // Support hero movements
     if (engine.input.isKeyPressed(engine.input.keys.Right)) {
+      engine.audio.playCue(this.mCue, 0.5);
+      engine.audio.incBackgroundVolume(0.05);
       xform.incXPosBy(deltaX);
       if (xform.getXPos() > 30) {
         // right-bound of the window
@@ -57,6 +64,8 @@ class MyGame extends engine.Scene {
       }
     }
     if (engine.input.isKeyPressed(engine.input.keys.Left)) {
+      engine.audio.playCue(this.mCue, 1.5);
+      engine.audio.incBackgroundVolume(-0.05);
       xform.incXPosBy(-deltaX);
       if (xform.getXPos() < 11) {
         // left-bound of the window
@@ -67,10 +76,19 @@ class MyGame extends engine.Scene {
   }
   load() {
     engine.xml.load(this.mSceneFile);
+    // loads the audios
+    engine.audio.load(this.mBackgroundAudio);
+    engine.audio.load(this.mCue);
   }
   unload() {
     // unload the scene file and loaded resources
     engine.xml.unload(this.mSceneFile);
+    // Step A: Game loop not running, unload all assets
+    // stop the background audio
+    engine.audio.stopBackground();
+    // unload the scene resources
+    engine.audio.unload(this.mBackgroundAudio);
+    engine.audio.unload(this.mCue);
   }
   next() {
     super.next(); // this must be called!
