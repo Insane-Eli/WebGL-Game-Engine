@@ -8,6 +8,7 @@ import BlueLevel from "./blue_level.js";
 class MyGame extends engine.Scene {
   constructor() {
     super();
+
     // The camera to view the scene
     this.mCamera = null;
     // the hero and the support objects
@@ -32,6 +33,7 @@ class MyGame extends engine.Scene {
     this.mHero.setColor([0, 0, 1, 1]);
     this.mHero.getXform().setPosition(20, 60);
     this.mHero.getXform().setSize(2, 3);
+    // now start the Background music ...
   }
   draw() {
     // Step A: clear the canvas
@@ -50,6 +52,7 @@ class MyGame extends engine.Scene {
     let xform = this.mHero.getXform();
     // Support hero movements
     if (engine.input.isKeyPressed(engine.input.keys.Right)) {
+
       xform.incXPosBy(deltaX);
       if (xform.getXPos() > 30) {
         // right-bound of the window
@@ -57,6 +60,7 @@ class MyGame extends engine.Scene {
       }
     }
     if (engine.input.isKeyPressed(engine.input.keys.Left)) {
+
       xform.incXPosBy(-deltaX);
       if (xform.getXPos() < 11) {
         // left-bound of the window
@@ -66,11 +70,11 @@ class MyGame extends engine.Scene {
     if (engine.input.isKeyPressed(engine.input.keys.Q)) this.stop(); // Quit the game
   }
   load() {
-    engine.xml.load(this.mSceneFile);
+
   }
+
   unload() {
-    // unload the scene file and loaded resources
-    engine.xml.unload(this.mSceneFile);
+
   }
   next() {
     super.next(); // this must be called!

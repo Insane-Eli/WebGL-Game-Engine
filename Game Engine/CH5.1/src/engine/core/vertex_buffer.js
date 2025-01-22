@@ -9,17 +9,17 @@ let mVerticesOfSquare = [
   -0.5, 0.5, 0.0,
   0.5, -0.5, 0.0,
   -0.5, -0.5, 0.0
-  ];
-  // Second: define the corresponding texture coordinates
-  let mTextureCoordinates = [
+];
+// Second: define the corresponding texture coordinates
+let mTextureCoordinates = [
   1.0, 1.0,
   0.0, 1.0,
   1.0, 0.0,
   0.0, 0.0
-  ];
+];
 
-  let mGLTextureCoordBuffer = null;
-  function getTexCoord() { return mGLTextureCoordBuffer; }
+let mGLTextureCoordBuffer = null;
+function getTexCoord() { return mGLTextureCoordBuffer; }
 
 function init() {
   let gl = glSys.get();
@@ -35,16 +35,16 @@ function init() {
     new Float32Array(mVerticesOfSquare),
     gl.STATIC_DRAW
   );
-  // Step D: Allocate and store texture coordinates
-// Create a buffer on the gl context for texture coordinates
-mGLTextureCoordBuffer = gl.createBuffer();
-// Activate texture coordinate buffer
-gl.bindBuffer(gl.ARRAY_BUFFER, mGLTextureCoordBuffer);
-// Loads textureCoordinates into the mGLTextureCoordBuffer
-gl.bufferData(gl.ARRAY_BUFFER,
-new Float32Array(mTextureCoordinates), gl.STATIC_DRAW);
-}
 
+  // Step D: Allocate and store texture coordinates
+  // Create a buffer on the gl context for texture coordinates
+  mGLTextureCoordBuffer = gl.createBuffer();
+  // Activate texture coordinate buffer
+  gl.bindBuffer(gl.ARRAY_BUFFER, mGLTextureCoordBuffer);
+  // Loads textureCoordinates into the mGLTextureCoordBuffer
+  gl.bufferData(gl.ARRAY_BUFFER,
+    new Float32Array(mTextureCoordinates), gl.STATIC_DRAW);
+}
 function cleanUp() {
   if (mGLVertexBuffer !== null) {
     glSys.get().deleteBuffer(mGLVertexBuffer);
@@ -53,7 +53,7 @@ function cleanUp() {
   if (mGLTextureCoordBuffer !== null) {
     gl.deleteBuffer(mGLTextureCoordBuffer);
     mGLTextureCoordBuffer = null;
-    }
+  }
 }
 function get() {
   return mGLVertexBuffer;

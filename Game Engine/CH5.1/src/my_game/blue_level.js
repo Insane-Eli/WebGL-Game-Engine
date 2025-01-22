@@ -7,6 +7,7 @@ import MyGame from "./my_game.js";
 class BlueLevel extends engine.Scene {
   constructor() {
     super();
+
     // scene file name
     this.mSceneFile = "assets/blue_level.xml";
     // all squares
@@ -21,6 +22,8 @@ class BlueLevel extends engine.Scene {
     this.mCamera = sceneParser.parseCamera();
     // Step B: Read all the squares
     sceneParser.parseSquares(this.mSqSet);
+    // now start the Background music ...
+
   }
 
   draw() {
@@ -38,34 +41,38 @@ class BlueLevel extends engine.Scene {
     let deltaX = 0.05;
     /// Move right and swap over
     if (engine.input.isKeyPressed(engine.input.keys.Right)) {
-    xform.incXPosBy(deltaX);
-    if (xform.getXPos() > 30) { // right-bound of the window
-    xform.setPosition(12, 60);
-    }
+      xform.incXPosBy(deltaX);
+      if (xform.getXPos() > 30) {
+        // right-bound of the window
+        xform.setPosition(12, 60);
+      }
     }
     // test for white square movement
     if (engine.input.isKeyPressed(engine.input.keys.Left)) {
-    xform.incXPosBy(-deltaX);
-    if (xform.getXPos() < 11) { // this is the left-boundary
-    this.next(); // go back to my game
+      xform.incXPosBy(-deltaX);
+      if (xform.getXPos() < 11) {
+        // this is the left-boundary
+        this.next(); // go back to my game
+      }
     }
-    }
-    if (engine.input.isKeyPressed(engine.input.keys.Q))
-    this.stop(); // Quit the game
-    }
+    if (engine.input.isKeyPressed(engine.input.keys.Q)) this.stop(); // Quit the game
+  }
   load() {
     engine.xml.load(this.mSceneFile);
+
   }
   unload() {
+    // stop the background audio
+    engine.audio.stopBackground();
     // unload the scene file and loaded resources
     engine.xml.unload(this.mSceneFile);
+
   }
   next() {
     super.next();
     let nextLevel = new MyGame(); // load the next level
     nextLevel.start();
-    }
-
+  }
 }
 
 window.onload = function () {
