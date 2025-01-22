@@ -1,6 +1,6 @@
-import * as glSys from "./core/gl.js";
-	import * as shaderResources from "./core/shader_resources.js";
-    import Transform from "./transform.js";
+import * as glSys from "../core/gl.js";
+	import * as shaderResources from "../core/shader_resources.js";
+    import Transform from "../transform.js";
 
 	class Renderable {
 		constructor() {

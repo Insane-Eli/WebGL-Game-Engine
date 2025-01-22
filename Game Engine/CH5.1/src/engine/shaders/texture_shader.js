@@ -18,4 +18,21 @@ class TextureShader extends SimpleShader {
         this.mSamplerRef = gl.getUniformLocation(this.mCompiledShader,
             "uSampler");
     }
+    // Overriding the Activation of the shader for rendering
+activate(pixelColor, trsMatrix, cameraMatrix) {
+    // first call the super class's activate
+    super.activate(pixelColor, trsMatrix, cameraMatrix);
+    // now our own functionality: enable texture coordinate array
+    let gl = glSys.get();
+    gl.bindBuffer(gl.ARRAY_BUFFER, this._getTexCoordBuffer());
+    gl.vertexAttribPointer(this.mTextureCoordinateRef, 2,
+    gl.FLOAT, false, 0, 0);
+    gl.enableVertexAttribArray(this.mTextureCoordinateRef);
+    // bind uSampler to texture 0
+    gl.uniform1i(this.mSamplerRef, 0);
+    // texture.activateTexture() binds to Texture0
+    }
+    _getTexCoordBuffer() {
+    return vertexBuffer.getTexCoord();
+    }
 }
