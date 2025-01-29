@@ -7,8 +7,10 @@ import * as text from "./resources/text.js";
 import * as xml from "./resources/xml.js";
 import Scene from "./scene.js";
 import * as loop from "./core/loop.js";
+import * as texture from "./resources/texture.js";
 // general utilities
-import Renderable from "./renderable.js";
+import Renderable from "./renderables/renderable.js";
+import TextureRenderable from "./renderables/texture_renderable.js";
 import Transform from "./transform.js";
 import Camera from "./camera.js";
 import * as audio from "./resources/audio.js";
@@ -21,6 +23,7 @@ function init(htmlCanvasID) {
   input.init();
   audio.init();
 }
+
 function cleanUp() {
   loop.cleanUp();
   audio.cleanUp();
@@ -43,11 +46,13 @@ export default {
   audio,
   text,
   xml,
+  texture,
   // Util classes
   Camera,
   Scene,
   Transform,
   Renderable,
+  TextureRenderable,
   // functions
   init,
   cleanUp,
