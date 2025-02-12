@@ -20,5 +20,7 @@ class TextureRenderable extends Renderable {
   setTexture(newTexture) {
     this.mTexture = newTexture;
   }
+  
 }
+
 export default TextureRenderable;

@@ -25,6 +25,7 @@ function init(htmlCanvasID) {
   // Set images to flip y axis to match the texture coordinate space.
   mGL.pixelStorei(mGL.UNPACK_FLIP_Y_WEBGL, true);
 }
+
 function cleanUp() {
   if (mGL == null || mCanvas == null)
     throw new Error("Engine cleanup: system is not initialized.");
