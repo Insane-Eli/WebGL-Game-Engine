@@ -4,6 +4,7 @@ import engine from "../engine/index.js";
 import * as loop from "../engine/core/loop.js";
 import SceneFileParser from "./util/scene_file_parser.js";
 import BlueLevel from "./blue_level.js";
+import Transform from "../engine/transform.js"
 
 class MyGame extends engine.Scene {
   constructor() {
@@ -22,36 +23,33 @@ class MyGame extends engine.Scene {
     this.mCamera = new engine.Camera(
       vec2.fromValues(20, 60), // position of the camera
       20, // width of camera
-      [20, 40, 600, 300] // viewport (orgX, orgY, width, height)
+      [20, 40, 600, 400] // viewport (orgX, orgY, width, height)
     );
-    this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
+    this.mCamera.setBackgroundColor([0.9, 0.9, 0.9, 1]);
     // Step B: Create the game objects
     this.mPortal = new engine.TextureRenderable(this.kPortal);
     this.mPortal.setColor([1, 0, 0, 0.2]); // tints red
     this.mPortal.getXform().setPosition(25, 60);
     this.mPortal.getXform().setSize(3, 3);
-    this.mCollector = new engine.TextureRenderable(this.kCollector);
-    this.mCollector.setColor([0, 0, 0, 0]); // No tinting
-    this.mCollector.getXform().setPosition(15, 60);
-    this.mCollector.getXform().setSize(3, 3);
     // Step C: Create the hero object in blue
     this.mHero = new engine.Renderable();
-    this.mHero.setColor([0, 0, 1, 1]);
+    this.mHero.setColor([0, 1, 0, 1]);
     this.mHero.getXform().setPosition(20, 60);
-    this.mHero.getXform().setSize(2, 3);
+    this.mHero.getXform().setSize(1, 1);
     // now start the Background music ...
+
   }
   draw() {
     // Step A: clear the canvas
-    engine.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
+    engine.clearCanvas([0.8, 0.8, 0.8, 1.0]); // clear to light gray
     // Step B: Activate the drawing Camera
     this.mCamera.setViewAndCameraMatrix();
     // Step C: Draw everything
     this.mPortal.draw(this.mCamera);
     this.mHero.draw(this.mCamera);
-    this.mCollector.draw(this.mCamera);
   }
   update() {
+    
     // let's only allow the movement of hero,
     // and if hero moves too far off, this level ends, we will
     // load the next level
@@ -70,24 +68,39 @@ class MyGame extends engine.Scene {
         this.next();
       }
     }
+
+
+    //TIME!!!
+    const now = new Date();
+
     // continuously change texture tinting
     let c = this.mPortal.getColor();
-    let ca = c[3] + deltaX;
-    if (ca > 1) {
-      ca = 0;
+    if(now.getSeconds % 15 == 0){
+      c[3] = 1;
+    } else {
+    c[3] = 0;
     }
-    c[3] = ca;
+
+
+    const radius = 5; //max is around 6
+    const twopi = 2*Math.PI;
+    const speed = -1;
+    const seconds = now.getSeconds() + (now.getMilliseconds()/1000);
+    const newXPos = 20 + (Math.cos(seconds/60*twopi*speed)*radius);
+    const newYPos = 60 + (Math.sin(seconds/60*twopi*speed)*radius);
+    this.mPortal.getXform().setPosition(newXPos, newYPos);
+
+    console.log("seconds = " +seconds + ", seconds / 60 = " + seconds/60 )
+
   }
   load() {
     // loads the textures
     engine.texture.load(this.kPortal);
-    engine.texture.load(this.kCollector);
   }
 
   unload() {
     // Game loop not running, unload all assets
     engine.texture.unload(this.kPortal);
-    engine.texture.unload(this.kCollector);
   }
   next() {
     super.next();
