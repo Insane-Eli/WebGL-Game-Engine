@@ -72,6 +72,8 @@ class MyGame extends engine.Scene {
     // VERY EXPENSIVE!!
     // if (this.mCollector.pixelTouches(this.mPortal, h)) {
     if (this.mPortal.pixelTouches(this.mCollector, h)) {
+    // if (this.mCollector.pixelTouches(this.mPortal, h)) {
+
     msg = "Collided!: (" + h[0].toPrecision(4) + " " +
     h[1].toPrecision(4) + ")";
     this.mDyePack.setVisibility(true);
