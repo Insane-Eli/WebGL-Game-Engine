@@ -10,6 +10,7 @@ import * as loop from "./core/loop.js";
 import * as texture from "./resources/texture.js";
 import * as font from "./resources/font.js";
 import * as defaultResources from "./resources/default_resources.js";
+
 // general utilities
 import Renderable from "./renderables/renderable.js";
 import TextureRenderable from "./renderables/texture_renderable.js";
@@ -21,6 +22,10 @@ import SpriteAnimateRenderable from "./renderables/sprite_animate_renderable.js"
 import FontRenderable from "./renderables/font_renderable.js";
 import { eTexCoordArrayIndex } from "./renderables/sprite_renderable.js";
 import { eAnimationType } from "./renderables/sprite_animate_renderable.js";
+
+// game objects
+import GameObject from "./game_objects/game_object.js";
+import GameObjectSet from "./game_objects/game_object_set.js";
 
 // general engine utilities
 function init(htmlCanvasID) {
@@ -67,9 +72,13 @@ export default {
   SpriteRenderable,
   SpriteAnimateRenderable,
   FontRenderable,
+  // Game Objects
+  GameObject,
+  GameObjectSet,
   // constants
   eTexCoordArrayIndex,
   eAnimationType,
+  
   // functions
   init,
   cleanUp,
