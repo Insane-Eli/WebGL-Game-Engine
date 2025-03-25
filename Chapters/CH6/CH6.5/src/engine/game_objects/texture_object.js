@@ -9,7 +9,7 @@ class TextureObject extends engine.GameObject {
         this.mRenderComponent.getXform().setPosition(x, y);
         this.mRenderComponent.getXform().setSize(w, h);
     }
-    update(up, down, left, right) {
+    update(up, down, left, right, rotate) {
         let xform = this.getXform();
         if (engine.input.isKeyPressed(up)) {
             xform.incYPosBy(this.kDelta);
@@ -22,6 +22,9 @@ class TextureObject extends engine.GameObject {
         }
         if (engine.input.isKeyPressed(right)) {
             xform.incXPosBy(this.kDelta);
+        }
+        if (engine.input.isKeyPressed(rotate)){
+            xform.incRotationByDegree(5);
         }
     }
 }

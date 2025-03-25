@@ -64,9 +64,9 @@ class MyGame extends engine.Scene {
   update() {
     let msg = "No Collision";
     this.mCollector.update(engine.input.keys.W, engine.input.keys.S,
-    engine.input.keys.A, engine.input.keys.D);
+    engine.input.keys.A, engine.input.keys.D, engine.input.keys.E);
     this.mPortal.update(engine.input.keys.Up, engine.input.keys.Down,
-    engine.input.keys.Left, engine.input.keys.Right);
+    engine.input.keys.Left, engine.input.keys.Right, engine.input.keys.P);
     let h = [];
     // Portal's resolution is 1/16 x 1/16 that of Collector!
     // VERY EXPENSIVE!!
