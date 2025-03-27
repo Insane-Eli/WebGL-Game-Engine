@@ -84,15 +84,19 @@ class MyGame extends engine.Scene {
     engine.GameObject.prototype.update.call(this.mBrain);
     break;
     }
+
     if (engine.input.isKeyClicked(engine.input.keys.H)) {
     this.mMode = 'H';
     }
+
     if (engine.input.isKeyClicked(engine.input.keys.J)) {
     this.mMode = 'J';
     }
+
     if (engine.input.isKeyClicked(engine.input.keys.K)) {
     this.mMode = 'K';
     }
+    
     this.mMsg.setText(msg + this.mMode);
   }
   load() {

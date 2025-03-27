@@ -15,7 +15,7 @@ class MyGame extends engine.Scene {
     this.kFontImage = "assets/consolas-72.png";
     this.kMinionSprite = "assets/minion_sprite.png";
     this.kMinionPortal = "assets/minion_portal.png";
-   // this.kMinionCollector = "assets/minion_collector.png";
+    // this.kMinionCollector = "assets/minion_collector.png";
 
     // The camera to view the scene
     this.mCamera = null;
@@ -26,6 +26,7 @@ class MyGame extends engine.Scene {
     this.mBrain = null;
     this.mLeftMinion = null;
     this.mRighttMinion = null;
+    this.mTarget = null;
 
   }
 
@@ -45,13 +46,12 @@ class MyGame extends engine.Scene {
     this.mMsg.setTextHeight(2);
 
     this.mPortal = new TextureObject(this.kMinionPortal, 70, 30, 10, 10);
-
     this.mHero = new Hero(this.kMinionSprite);
-
     this.mBrain = new Brain(this.kMinionSprite)
-
     this.mLeftMinion = new Minion(this.kMinionSprite)
     this.mRightMinion = new Minion(this.kMinionSprite)
+
+    this.mTarget = this.mHero
 
 
     // this.mCollector = new TextureObject(this.kMinionCollector,
@@ -84,24 +84,60 @@ class MyGame extends engine.Scene {
       engine.input.keys.A, engine.input.keys.D);
 
     // L, R, H, B keys: Select the target for colliding with the Portal minion
-      
-      // pressing l and r will change the collision detection between the portal minion
-      
-      // pressing h will do the same with the hero
-      
-      // pressing b will do the same with the brain
+
+    // pressing l and r will change the collision detection between the portal minion
+
+    // pressing h will do the same with the hero
+
+    // pressing b will do the same with the brain
 
     // the brain object constantly seeks out the hero
 
-    let target = this.mBrain;
+    let target = '';
     let msg = "WASD target:" + target + " [L:left minion R:right minion H:hero B:brain] ";
 
     let h = [];
     // Portal's resolution is 1/16 x 1/16 that of Collector!
     // VERY EXPENSIVE!!
+    
+    // L, R, H, B keys: Select the target for colliding with the Portal minion
+
+    if(engine.input.isKeyClicked(engine.input.keys.L)){
+      target = 'L';
+    }
+    if(engine.input.isKeyClicked(engine.input.keys.R)){
+      target = 'R';
+    }
+    if(engine.input.isKeyClicked(engine.input.keys.H)){
+      target = 'H';
+    }
+    if(engine.input.isKeyClicked(engine.input.keys.B)){
+      target = 'B';
+    }
+
+    switch (target) {
+
+      // pressing l and r will change the collision detection between the portal minion
+      case 'L':
+        this.mTarget = this.mLeftMinion;
+        break;
+
+      case 'R':
+        this.mTarget = this.mLeftMinion;
+        break;
       
+      // pressing h will do the same with the hero
+      case 'H':
+        this.mTarget = this.mHero;
+        break;
+      
+      // pressing b will do the same with the brain
+      case 'B':
+        this.mTarget = this.mBrain;
+        break;
+    }
     // if (this.mCollector.pixelTouches(this.mPortal, h)) {
-    if (this.mPortal.pixelTouches(target, h)) {
+    if (this.mPortal.pixelTouches(this.mTarget, h)) {
       msg = "Collided!: (" + h[0].toPrecision(4) + " " +
         h[1].toPrecision(4) + ")";
     }
