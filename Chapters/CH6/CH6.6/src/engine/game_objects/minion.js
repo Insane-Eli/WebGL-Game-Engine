@@ -19,18 +19,26 @@ class Minion extends engine.GameObject {
         this.mRenderComponent.setAnimationType(
             engine.eAnimationType.eSwing);
         this.mRenderComponent.setAnimationSpeed(15);
+        this.mCurrentFrontDiroggleRandomness = true;
         // show each element for mAnimSpeed updates
+        this.mToggleRandomness = true;
+
+    }
+    toggleRandomness(toggle) {
+        this.mToggleRandomness = toggle;
     }
     update() {
         // remember to update this.mRenderComponent's animation
         this.mRenderComponent.updateAnimation();
-        // move towards the left and wraps
-        let xform = this.getXform();
-        xform.incXPosBy(-this.kDelta);
-        // if fly off to the left, re-appear at the right
-        if (xform.getXPos() < 0) {
-            xform.setXPos(100);
-            xform.setYPos(65 * Math.random());
+        if (this.mToggleRandomness) {
+            // move towards the left and wraps
+            let xform = this.getXform();
+            xform.incXPosBy(-this.kDelta);
+            // if fly off to the left, re-appear at the right
+            if (xform.getXPos() < 0) {
+                xform.setXPos(100);
+                xform.setYPos(65 * Math.random());
+            }
         }
     }
 }

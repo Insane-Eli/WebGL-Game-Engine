@@ -98,7 +98,9 @@ class MyGame extends engine.Scene {
     }
     
     this.mMsg.setText(msg + this.mMode);
+
   }
+
   load() {
     // Step A: loads the textures
     engine.texture.load(this.kFontImage);

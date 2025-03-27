@@ -52,6 +52,12 @@ class MyGame extends engine.Scene {
     this.mRightMinion = new Minion(this.kMinionSprite)
 
     this.mTarget = this.mHero
+    this.mLeftMinion.toggleRandomness(false);
+    this.mRightMinion.toggleRandomness(false);
+    this.mLeftMinion.mRenderComponent.getXform().setPosition(20,20);
+    this.mRightMinion.mRenderComponent.getXform().setPosition(60,20);
+
+
 
 
     // this.mCollector = new TextureObject(this.kMinionCollector,
@@ -73,90 +79,76 @@ class MyGame extends engine.Scene {
   }
 
   update() {
+    let h = [];
 
-    // reqs:
-    // DONE: Arrow and P keys: Move and rotate the Portal minion
+    this.mLeftMinion.update(this.mCamera);
+    this.mRightMinion.update(this.mCamera);
+
+    // Arrow and P keys: Move and rotate the Portal minion
     this.mPortal.update(engine.input.keys.Up, engine.input.keys.Down,
       engine.input.keys.Left, engine.input.keys.Right, engine.input.keys.P);
 
-    // DONE: WASD keys: Move the Hero
+    // WASD keys: Move the Hero
     this.mHero.update(engine.input.keys.W, engine.input.keys.S,
       engine.input.keys.A, engine.input.keys.D);
 
     // L, R, H, B keys: Select the target for colliding with the Portal minion
-
-    // pressing l and r will change the collision detection between the portal minion
-
-    // pressing h will do the same with the hero
-
-    // pressing b will do the same with the brain
-
-    // the brain object constantly seeks out the hero
-
-    let target = '';
-    let msg = "WASD target:" + target + " [L:left minion R:right minion H:hero B:brain] ";
-
-    let h = [];
-    // Portal's resolution is 1/16 x 1/16 that of Collector!
-    // VERY EXPENSIVE!!
-    
-    // L, R, H, B keys: Select the target for colliding with the Portal minion
-
-    if(engine.input.isKeyClicked(engine.input.keys.L)){
-      target = 'L';
-    }
-    if(engine.input.isKeyClicked(engine.input.keys.R)){
-      target = 'R';
-    }
-    if(engine.input.isKeyClicked(engine.input.keys.H)){
-      target = 'H';
-    }
-    if(engine.input.isKeyClicked(engine.input.keys.B)){
-      target = 'B';
+    // Only update target when the corresponding key is clicked
+    if (engine.input.isKeyClicked(engine.input.keys.L)) {
+      this.target = 'L'; // Assign left minion as target
+    } else if (engine.input.isKeyClicked(engine.input.keys.R)) {
+      this.target = 'R'; // Assign right minion as target
+    } else if (engine.input.isKeyClicked(engine.input.keys.H)) {
+      this.target = 'H'; // Assign hero as target
+    } else if (engine.input.isKeyClicked(engine.input.keys.B)) {
+      this.target = 'B'; // Assign brain as target
     }
 
-    switch (target) {
+    // Display a message about the current collision target
+    let msg = "Collision target [L:left minion R:right minion H:hero B:brain]: " + this.target;
 
-      // pressing l and r will change the collision detection between the portal minion
+    // Set the correct target object based on the selected target
+    switch (this.target) {
       case 'L':
         this.mTarget = this.mLeftMinion;
         break;
-
       case 'R':
-        this.mTarget = this.mLeftMinion;
+        this.mTarget = this.mRightMinion;
         break;
-      
-      // pressing h will do the same with the hero
       case 'H':
         this.mTarget = this.mHero;
         break;
-      
-      // pressing b will do the same with the brain
       case 'B':
         this.mTarget = this.mBrain;
         break;
     }
-    // if (this.mCollector.pixelTouches(this.mPortal, h)) {
+
+    // Check for collision between the portal and the selected target
     if (this.mPortal.pixelTouches(this.mTarget, h)) {
       msg = "Collided!: (" + h[0].toPrecision(4) + " " +
         h[1].toPrecision(4) + ")";
     }
 
+    // Update the message to show the current target and collision status
     this.mMsg.setText(msg);
+
+    //brain follows player
+    this.mBrain.rotateObjPointTo(
+      this.mHero.getXform().getPosition(), 1);
+      engine.GameObject.prototype.update.call(this.mBrain);
+
   }
 
   load() {
     // Step A: loads the textures
     engine.texture.load(this.kFontImage);
     engine.texture.load(this.kMinionSprite);
-    //engine.texture.load(this.kMinionCollector);
     engine.texture.load(this.kMinionPortal);
   }
 
   unload() {
     engine.texture.unload(this.kFontImage);
     engine.texture.unload(this.kMinionSprite);
-    //engine.texture.unload(this.kMinionCollector);
     engine.texture.unload(this.kMinionPortal);
   }
 
